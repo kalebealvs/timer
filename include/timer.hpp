@@ -17,6 +17,10 @@ public:
 
     uint64_t getId () const;
 
+#ifdef DEBUG
+    static void resetIdCount ();
+#endif
+
 private:
     std::chrono::time_point<std::chrono::system_clock> start_time;
     std::chrono::time_point<std::chrono::system_clock> end_time;

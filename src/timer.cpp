@@ -24,11 +24,17 @@ double Timer::elapsedTime () const {
 }
 
 void Timer::printDuration () const {
-    std::cout << "Timer " << id << ":" << elapsedTime<std::chrono::milliseconds>();
+    std::cout << "Timer " << id << ":" << elapsedTime<std::chrono::microseconds>() << '\n';
 }
 
 uint64_t Timer::getId () const {
     return static_cast<uint64_t> (id);
 }
+
+#ifdef DEBUG
+void Timer::resetIdCount () {
+    id_count = 0;
+}
+#endif
 
 std::atomic<uint64_t> Timer::id_count = 0;

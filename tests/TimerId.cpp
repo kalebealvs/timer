@@ -3,7 +3,13 @@
 #include <thread>
 #include "timer.hpp"
 
-TEST (TimerId, SameThread) {
+struct TimerId : public ::testing::Test {
+    virtual void SetUp () override {
+        Timer::resetIdCount ();
+    }
+};
+
+TEST_F (TimerId, SameThread) {
     Timer timer;
     Timer timer2;
     {
@@ -17,7 +23,7 @@ TEST (TimerId, SameThread) {
     EXPECT_EQ (timer4.getId (), 4);
 }
 
-TEST (TimerId, DifferentThread) {
+TEST_F (TimerId, DifferentThread) {
     const auto threadGetTimerId = [&](const int count) {
         Timer t;
         EXPECT_EQ (t.getId (), count);
