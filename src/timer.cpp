@@ -19,12 +19,12 @@ void Timer::stop () {
 }
 
 template<typename duration_unit>
-double Timer::elipsedTime () const {
+double Timer::elapsedTime () const {
     return std::chrono::duration_cast<duration_unit> (end_time - start_time).count ();
 }
 
 void Timer::printDuration () const {
-    std::cout << "Timer " << id << ":" << elipsedTime<std::chrono::milliseconds> ();
+    std::cout << "Timer " << id << ":" << elapsedTime<std::chrono::milliseconds>();
 }
 
 uint64_t Timer::getId () const {

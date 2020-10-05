@@ -11,7 +11,7 @@ public:
     void stop ();
 
     template<typename duration_unit>
-    double elipsedTime () const;
+    double elapsedTime () const;
     
     void printDuration () const;
 
