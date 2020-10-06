@@ -9,10 +9,10 @@ public:
     ~Timer ();
 
     void stop ();
-
-    template<typename duration_unit>
-    double elapsedTime () const;
-    
+    long double elapsedInSeconds () const;
+    long double elapsedInMilliseconds () const;
+    long double elapsedInMicroseconds () const;
+    long double elapsedInNanoseconds () const;
     void printDuration () const;
 
     uint64_t getId () const;
@@ -22,8 +22,11 @@ public:
 #endif
 
 private:
-    std::chrono::time_point<std::chrono::system_clock> start_time;
-    std::chrono::time_point<std::chrono::system_clock> end_time;
+    template<typename duration_unit>
+    long double elapsedTime () const;
+
+    std::chrono::time_point<std::chrono::high_resolution_clock> start_time;
+    std::chrono::time_point<std::chrono::high_resolution_clock> end_time;
     bool stopped = false;
     uint64_t id;
     static std::atomic<uint64_t> id_count;

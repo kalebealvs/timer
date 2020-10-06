@@ -2,9 +2,7 @@
 
 #include "timer.hpp"
 
-Timer::Timer () : id{++id_count} {
-    start_time = std::chrono::system_clock::now ();
-}
+Timer::Timer () : start_time{std::chrono::high_resolution_clock::now ()}, id{++id_count} {}
 
 Timer::~Timer () {
     if (stopped)
@@ -15,11 +13,27 @@ Timer::~Timer () {
 }
 
 void Timer::stop () {
-    end_time = std::chrono::system_clock::now ();
+    end_time = std::chrono::high_resolution_clock::now ();
+}
+
+long double Timer::elapsedInSeconds () const {
+    return elapsedTime<std::chrono::seconds> ();
+}
+
+long double Timer::elapsedInMilliseconds () const {
+    return elapsedTime<std::chrono::milliseconds> ();
+}
+
+long double Timer::elapsedInMicroseconds () const {
+    return elapsedTime<std::chrono::microseconds> ();
+}
+
+long double Timer::elapsedInNanoseconds () const {
+    return elapsedTime<std::chrono::nanoseconds> ();
 }
 
 template<typename duration_unit>
-double Timer::elapsedTime () const {
+long double Timer::elapsedTime () const {
     return std::chrono::duration_cast<duration_unit> (end_time - start_time).count ();
 }
 
