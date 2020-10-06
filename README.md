@@ -1,3 +1,3 @@
 # timer
 
-Simple Timer for debugging
+Simple Timer for perf analysis.
