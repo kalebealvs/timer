@@ -38,7 +38,7 @@ long double Timer::elapsedTime () const {
 }
 
 void Timer::printDuration () const {
-    std::cout << "Timer " << id << ":" << elapsedTime<std::chrono::microseconds>() << '\n';
+    std::cout << "Timer " << id << ": " << elapsedTime<std::chrono::microseconds>() << " μs \n";
 }
 
 uint64_t Timer::getId () const {
