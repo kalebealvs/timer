@@ -6,7 +6,10 @@
 class Timer {
 public:
     Timer ();
+    Timer (Timer &&oldTimer);
     ~Timer ();
+    Timer (const Timer &t) = delete;
+    Timer operator= (const Timer&) = delete;
 
     void stop ();
     long double elapsedInSeconds () const;
@@ -16,6 +19,8 @@ public:
     void printDuration () const;
 
     uint64_t getId () const;
+
+    bool isValid () const;
 
 #ifdef DEBUG
     static void resetIdCount ();

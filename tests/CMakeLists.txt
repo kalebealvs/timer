@@ -3,6 +3,7 @@ set(This TimerTests)
 set(TESTS_SRC
     TimerId.cpp
     Duration.cpp
+    ValidTimer.cpp
 )
 
 add_executable(${This} ${TESTS_SRC})

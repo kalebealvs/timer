@@ -4,6 +4,15 @@
 
 Timer::Timer () : start_time{std::chrono::high_resolution_clock::now ()}, id{++id_count} {}
 
+Timer::Timer (Timer&& oldTimer) : start_time{oldTimer.start_time},
+                                  end_time{oldTimer.end_time},
+                                  stopped{oldTimer.stopped}, 
+                                  id{oldTimer.id} {
+    oldTimer.stopped = true;
+    oldTimer.end_time = oldTimer.start_time;
+    oldTimer.id = std::numeric_limits<uint64_t>::max ();
+}
+
 Timer::~Timer () {
     if (stopped)
         return;
@@ -43,6 +52,10 @@ void Timer::printDuration () const {
 
 uint64_t Timer::getId () const {
     return static_cast<uint64_t> (id);
+}
+
+bool Timer::isValid () const {
+    return id != std::numeric_limits<uint64_t>::max ();
 }
 
 #ifdef DEBUG
