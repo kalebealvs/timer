@@ -12,5 +12,9 @@ target_link_libraries(${This} PUBLIC
     timer
 )
 
+target_compile_options(${This} PRIVATE
+    ${PROJECT_CXX_FLAGS}
+)
+
 include(GoogleTest)
 gtest_add_tests(TARGET ${This})
