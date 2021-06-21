@@ -22,7 +22,11 @@ Timer::~Timer () {
 }
 
 void Timer::stop () {
+    if (stopped)
+        return;
+        
     end_time = std::chrono::high_resolution_clock::now ();
+    stopped = true;
 }
 
 long double Timer::elapsedInSeconds () const {
