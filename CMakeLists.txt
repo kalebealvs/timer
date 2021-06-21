@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.8.0)
 
-project(Timer VERSION 0.1.0)
+project(Timer VERSION 0.6.0)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_FLAGS_DEBUG "-DDEBUG")
@@ -14,6 +14,6 @@ add_subdirectory(lib/googletest)
 include_directories (include)
 
 add_library(timer SHARED src/timer.cpp)
-target_compile_options(timer PRIVATE ${PROJECT_CXX_FLAGS})
+target_compile_options(timer PRIVATE ${PROJECT_CXX_FLAGS} -fanalyzer)
 
 add_subdirectory(tests)
