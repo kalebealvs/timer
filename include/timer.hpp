@@ -1,40 +1,42 @@
 #ifndef KTIMER_H
 #define KTIMER_H
-#include <chrono>
 #include <atomic>
+#include <chrono>
 
 class Timer {
 public:
-    Timer ();
-    Timer (Timer &&oldTimer);
-    ~Timer ();
-    Timer (const Timer &t) = delete;
-    Timer operator= (const Timer&) = delete;
+    Timer();
+    Timer(const Timer& t) = delete;
+    Timer(Timer&& oldTimer) noexcept;
+    ~Timer();
+    auto operator=(const Timer&) -> Timer& = delete;
+    auto operator=(Timer&& oldTimer) noexcept -> Timer&;
 
-    void stop ();
-    long double elapsedInSeconds () const;
-    long double elapsedInMilliseconds () const;
-    long double elapsedInMicroseconds () const;
-    long double elapsedInNanoseconds () const;
-    void printDuration () const;
+    auto stop() -> void;
+    auto elapsedInSeconds() const -> long double;
+    auto elapsedInMilliseconds() const -> long double;
+    auto elapsedInMicroseconds() const -> long double;
+    auto elapsedInNanoseconds() const -> long double;
+    auto printDuration() const -> void;
 
-    uint64_t getId () const;
+    auto getId() const -> uint64_t;
 
-    bool isValid () const;
+    auto isValid() const -> bool;
 
 #ifdef DEBUG
-    static void resetIdCount ();
+    static auto resetIdCount() -> void;
 #endif
 
 private:
-    template<typename duration_unit>
-    long double elapsedTime () const;
+    template <typename unit>
+    inline auto elapsedTime() const -> long double;
+    inline auto invalidate() -> void;
 
-    std::chrono::time_point<std::chrono::high_resolution_clock> start_time;
-    std::chrono::time_point<std::chrono::high_resolution_clock> end_time;
-    bool stopped = false;
-    uint64_t id;
-    static std::atomic<uint64_t> id_count;
+    std::chrono::high_resolution_clock::time_point _start_time;
+    std::chrono::high_resolution_clock::time_point _end_time;
+    bool _stopped = false;
+    uint64_t _id;
+    static std::atomic<uint64_t> _id_count;
 };
 
 #endif
