@@ -1,16 +1,18 @@
-#include <gtest/gtest.h>
+#include <gmock/gmock.h>
 
 #include "timer.hpp"
 
+using namespace ::testing;
+
 TEST(ValidTimer, Valid) {
     Timer timer;
-    EXPECT_EQ(timer.isValid(), true);
+    ASSERT_THAT(timer.isValid(), IsTrue());
     timer.stop();
-    EXPECT_EQ(timer.isValid(), true);
+    ASSERT_THAT(timer.isValid(), IsTrue());
 }
 
 TEST(ValidTimer, Invalid) {
     Timer timer;
     Timer timer2{std::move(timer)};
-    EXPECT_EQ(timer.isValid(), false);
+    ASSERT_THAT(timer.isValid(), IsFalse());
 }

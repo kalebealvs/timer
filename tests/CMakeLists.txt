@@ -8,7 +8,7 @@ set(TESTS_SRC
 
 add_executable(${This} ${TESTS_SRC})
 target_link_libraries(${This} PUBLIC
-    gtest_main
+    gmock_main
     timer
 )
 

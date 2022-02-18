@@ -1,9 +1,11 @@
-#include <gtest/gtest.h>
+#include <gmock/gmock.h>
 
 #include <future>
 #include <thread>
 
 #include "timer.hpp"
+
+using namespace ::testing;
 
 struct TimerId : public ::testing::Test {
     virtual void SetUp() override { Timer::resetIdCount(); }
@@ -14,19 +16,19 @@ TEST_F(TimerId, SameThread) {
     Timer timer2;
     {
         Timer timer3;
-        EXPECT_EQ(timer3.getId(), 3);
+        ASSERT_THAT(timer3.getId(), Eq(3));
     }
 
     Timer timer4;
-    EXPECT_EQ(timer.getId(), 1);
-    EXPECT_EQ(timer2.getId(), 2);
-    EXPECT_EQ(timer4.getId(), 4);
+    ASSERT_THAT(timer.getId(), Eq(1));
+    ASSERT_THAT(timer2.getId(), Eq(2));
+    ASSERT_THAT(timer4.getId(), Eq(4));
 }
 
 TEST_F(TimerId, DifferentThread) {
     const auto threadGetTimerId = [&](const int count) {
         Timer t;
-        EXPECT_EQ(t.getId(), count);
+        ASSERT_THAT(t.getId(), Eq(count));
     };
 
     const auto createAndGetTimerID = []() { return Timer().getId(); };
@@ -35,8 +37,8 @@ TEST_F(TimerId, DifferentThread) {
     std::future<uint64_t> timerId2 = std::async(std::launch::async, createAndGetTimerID);
     timerId2.wait();
 
-    EXPECT_EQ(timerId1.get(), 1);
-    EXPECT_EQ(timerId2.get(), 2);
+    ASSERT_THAT(timerId1.get(), Eq(1));
+    ASSERT_THAT(timerId2.get(), Eq(2));
 
     std::thread thr1(threadGetTimerId, 3);
     thr1.join();
@@ -44,5 +46,5 @@ TEST_F(TimerId, DifferentThread) {
     thr2.join();
 
     Timer main;
-    EXPECT_EQ(main.getId(), 5);
+    ASSERT_THAT(main.getId(), Eq(5));
 }
