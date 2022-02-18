@@ -8,7 +8,11 @@
 using namespace ::testing;
 
 struct TimerId : public ::testing::Test {
+#ifdef DEBUG
     virtual void SetUp() override { Timer::resetIdCount(); }
+#else
+    virtual void SetUp() override { }
+#endif
 };
 
 TEST_F(TimerId, SameThread) {

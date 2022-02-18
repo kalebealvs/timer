@@ -3,3 +3,4 @@ build/**/*
 CMakeFiles
 cmake-build*
 .idea
+build-*
