@@ -82,8 +82,7 @@ auto Timer::printDuration() const -> void {
 auto Timer::getId() const -> uint64_t { return static_cast<uint64_t>(_id); }
 
 auto Timer::isValid() const -> bool {
-    return _id_count != limit<uint64_t>::max() && _start_time != InvalidTime &&
-           _end_time != InvalidTime;
+    return _id_count != limit<uint64_t>::max() && _start_time != InvalidTime;
 }
 
 #ifdef DEBUG
