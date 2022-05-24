@@ -1,0 +1,90 @@
+#BasedOnStyle: Google
+#IndentWidth: 4
+#ColumnLimit: 120
+#DerivePointerAlignment: false
+#PointerAlignment: Left
+#NamespaceIndentation: All
+#EmptyLineBeforeAccessModifier: Always
+#AccessModifierOffset: -4
+#AlignAfterOpenBracket: Align
+
+---
+# BasedOnStyle: Google
+ColumnLimit: 90
+Language: Cpp
+Standard: c++20
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+UseCRLF: false
+AccessModifierOffset: -4
+
+AlignAfterOpenBracket: Align
+AlignConsecutiveAssignments: None
+AlignConsecutiveBitFields: None
+AlignConsecutiveDeclarations: None
+AlignEscapedNewlines: DontAlign
+AlignOperands: Align
+
+AllowAllArgumentsOnNextLine: false
+AllowAllConstructorInitializersOnNextLine: true
+AllowAllParametersOfDeclarationOnNextLine: true
+AllowShortBlocksOnASingleLine: true
+AllowShortCaseLabelsOnASingleLine: true
+AllowShortEnumsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: false
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLambdasOnASingleLine: true
+AllowShortLoopsOnASingleLine: true
+
+AlwaysBreakAfterReturnType: None
+AlwaysBreakBeforeMultilineStrings: false
+AlwaysBreakTemplateDeclarations: Yes
+
+BinPackArguments: false
+BinPackParameters: false
+ExperimentalAutoDetectBinPacking: false
+
+BitFieldColonSpacing: Both
+
+BreakBeforeBinaryOperators: All
+BreakBeforeBraces: Attach
+BreakBeforeConceptDeclarations: false
+BreakBeforeTernaryOperators: true
+BreakConstructorInitializers: BeforeColon
+BreakInheritanceList: BeforeColon
+BreakStringLiterals: true
+
+ConstructorInitializerAllOnOneLineOrOnePerLine: false
+EmptyLineBeforeAccessModifier: Always
+
+IncludeBlocks: Preserve
+IndentCaseLabels: true
+IndentExternBlock: Indent
+IndentRequires: true
+
+MaxEmptyLinesToKeep: 1
+NamespaceIndentation: All
+PointerAlignment: Left
+ReflowComments: false
+
+SortIncludes: true
+SortUsingDeclarations: true
+
+SpaceAroundPointerQualifiers: Before
+SpaceBeforeAssignmentOperators: true
+SpaceBeforeCpp11BracedList: false
+SpaceBeforeCtorInitializerColon: true
+SpaceBeforeInheritanceColon: true
+SpaceBeforeParens: Never
+SpaceBeforeRangeBasedForLoopColon: true
+SpaceBeforeSquareBrackets: false
+SpaceInEmptyBlock: false
+SpaceInEmptyParentheses: false
+SpacesBeforeTrailingComments: 1
+SpacesInAngles: false
+SpacesInConditionalStatement: false
+SpacesInContainerLiterals: true
+SpacesInCStyleCastParentheses: false
+SpacesInParentheses: false
+SpacesInSquareBrackets: false
