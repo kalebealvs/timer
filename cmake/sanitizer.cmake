@@ -1,0 +1,16 @@
+if(SANITIZE)
+    if(ASAN)
+        set(SANITIZE_FLAGS ${ADDRESS_SAN})
+    elseif(TSAN)
+        set(SANITIZE_FLAGS ${THREAD_SAN})
+    elseif(MSAN)
+        set(SANITIZE_FLAGS ${MEMORY_SAN})
+    elseif(USAN)
+        set(SANITIZE_FLAGS ${UNDEF_SAN})
+    else() # AUSAN also
+        set(SANITIZE_FLAGS ${ADDRESS_UNDEF_SAN})
+    endif()
+
+    list(APPEND GENERAL_CXX_FLAGS ${SANITIZE_FLAGS})
+    list(APPEND GENERAL_CXX_LINK_FLAGS ${SANITIZE_FLAGS})
+endif()

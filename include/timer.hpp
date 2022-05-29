@@ -13,10 +13,10 @@ public:
     auto operator=(Timer&& oldTimer) noexcept -> Timer&;
 
     auto stop() -> void;
-    auto elapsedInSeconds() const -> long double;
-    auto elapsedInMilliseconds() const -> long double;
-    auto elapsedInMicroseconds() const -> long double;
-    auto elapsedInNanoseconds() const -> long double;
+    auto elapsedInSeconds() const -> double;
+    auto elapsedInMilliseconds() const -> double;
+    auto elapsedInMicroseconds() const -> double;
+    auto elapsedInNanoseconds() const -> double;
     auto printDuration() const -> void;
 
     auto getId() const -> uint64_t;
@@ -29,12 +29,14 @@ public:
 
 private:
     template <typename unit>
-    inline auto elapsedTime() const -> long double;
+    inline auto elapsedTime() const -> double;
     inline auto invalidate() -> void;
+    using epoch_type
+        = decltype(std::chrono::high_resolution_clock::now().time_since_epoch().count());
 
-    std::chrono::high_resolution_clock::time_point _start_time;
-    std::chrono::high_resolution_clock::time_point _end_time;
-    bool _stopped = false;
+    std::atomic<epoch_type> _start_time;
+    std::atomic<epoch_type> _end_time;
+    std::atomic<bool> _stopped = false;
     uint64_t _id;
     static std::atomic<uint64_t> _id_count;
 };

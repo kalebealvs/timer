@@ -1,0 +1,80 @@
+buildType:
+  default: debug
+  choices:
+    debug:
+      short: Debug
+      long: Emit debug information without performing optimizations
+      buildType: Debug
+      settings:
+        PROFILE: ON
+        BUILD_EXAMPLES: ON
+        BUILD_TESTS: ON
+    relWithDebInfo:
+      short: RelWithDebInfo
+      long: Perform optimizations AND include debug info
+      buildType: RelWithDebInfo
+      settings:
+        PROFILE: ON
+        BUILD_EXAMPLES: ON
+        BUILD_TESTS: ON
+    profile:
+      short: Profile
+      long: Optimize generated code, omit debug info but include profile trace options
+      buildType: Release
+      settings:
+        PROFILE: ON
+        BUILD_EXAMPLES: ON
+        BUILD_TESTS: ON
+    release:
+      short: Release
+      long: Optimize generated code, omit debug info
+      buildType: Release
+      settings:
+        BUILD_EXAMPLES: ON
+        BUILD_TESTS: OFF
+    minSizeRel:
+      short: MinSizeRel
+      long: Optimize for smallest binary size
+      buildType: MinSizeRel
+      settings:
+        BUILD_EXAMPLES: OFF
+        BUILD_TESTS: OFF
+
+useSAN:
+  default: 'ausan'
+  choices:
+    'asan':
+      short: Asan
+      long: Enable Address Sanitizer
+      settings:
+        SANITIZE: ON
+        ASAN: ON
+    'ausan':
+      short: AUsan
+      long: Enable Address + Undefined Behavior Sanitizer
+      settings:
+        SANITIZE: ON
+        AUSAN: ON
+    'tsan':
+      short: Tsan
+      long: Enable Thread Sanitizer
+      settings:
+        SANITIZE: ON
+        TSAN: ON
+    'msan':
+      short: Msan
+      long: Enable Memory Sanitizer
+      settings:
+        SANITIZE: ON
+        MSAN: ON
+    'usan':
+      short: Usan
+      long: Enable Undefined Behavior Sanitizer
+      settings:
+        SANITIZE: ON
+        USAN: ON
+    'no':
+      short: NoAsan
+      long: Disable Address Sanitizer
+      settings:
+        SANITIZE: OFF
