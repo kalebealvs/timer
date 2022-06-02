@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.8.0)
 
-project(Timer VERSION 0.6.1)
+project(Timer VERSION 0.6.2)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG")
@@ -13,14 +13,7 @@ include(cmake/googletest.cmake)
 
 include_directories(include)
 
-add_library(${PROJECT_NAME} SHARED src/timer.cpp)
-target_compile_options(${PROJECT_NAME} PRIVATE ${GENERAL_CXX_FLAGS})
-target_link_options(${PROJECT_NAME} PRIVATE ${GENERAL_CXX_LINK_FLAGS})
-
-target_include_directories(
-    ${PROJECT_NAME} PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>"
-                           "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
-)
+add_subdirectory(src)
 
 include(cmake/export.cmake)
 
