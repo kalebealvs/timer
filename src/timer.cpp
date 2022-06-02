@@ -33,7 +33,9 @@ static constexpr auto getRatio() {
     return duration_cast<unit>(sc(1)).count();
 }
 
-Timer::Timer() : _start_time{Clock::now().time_since_epoch().count()}, _id{++_id_count} {
+Timer::Timer()
+    : _start_time{Clock::now().time_since_epoch().count()}, _end_time{InvalidTime},
+      _stopped{false}, _id{++_id_count} {
 }
 
 Timer::Timer(Timer&& oldTimer) noexcept
@@ -93,7 +95,7 @@ auto Timer::elapsedTime() const -> double {
 auto Timer::invalidate() -> void {
     _stopped = true;
     _start_time = _end_time = InvalidTime;
-    _id = limit<uint64_t>::max();
+    _id = UINT64_MAX;
 }
 
 auto Timer::printDuration() const -> void {
@@ -105,7 +107,7 @@ auto Timer::getId() const -> uint64_t {
 }
 
 auto Timer::isValid() const -> bool {
-    return _id_count != limit<uint64_t>::max() && _start_time != InvalidTime;
+    return _id_count != UINT64_MAX && _start_time != InvalidTime;
 }
 
 #ifdef DEBUG

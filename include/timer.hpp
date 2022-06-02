@@ -36,7 +36,7 @@ private:
 
     std::atomic<epoch_type> _start_time;
     std::atomic<epoch_type> _end_time;
-    std::atomic<bool> _stopped = false;
+    std::atomic<bool> _stopped;
     uint64_t _id;
     static std::atomic<uint64_t> _id_count;
 };
