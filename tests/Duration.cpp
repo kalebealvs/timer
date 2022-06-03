@@ -30,3 +30,10 @@ TEST(TimerDuration, Elapsed) {
     ASSERT_THAT(t.elapsedInNanoseconds(), Gt(2000000000.));
     ASSERT_THAT(t.elapsedInNanoseconds(), Lt(2010000000.));
 }
+
+TEST(TimerDuration, ShowsCurrentDurationWhileRunning) {
+    Timer t;
+    const auto time = 200;
+    std::this_thread::sleep_for(milliseconds(time));
+    ASSERT_THAT(t.elapsedInMilliseconds(), Gt(time));
+}

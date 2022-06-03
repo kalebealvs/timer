@@ -1,6 +1,5 @@
 #ifndef KTIMER_H
 #define KTIMER_H
-#include <atomic>
 #include <chrono>
 
 class Timer {
@@ -34,11 +33,11 @@ private:
     using epoch_type
         = decltype(std::chrono::high_resolution_clock::now().time_since_epoch().count());
 
-    std::atomic<epoch_type> _start_time;
-    std::atomic<epoch_type> _end_time;
-    std::atomic<bool> _stopped;
+    epoch_type _start_time;
+    epoch_type _end_time;
+    bool _stopped;
     uint64_t _id;
-    static std::atomic<uint64_t> _id_count;
+    static uint64_t _id_count;
 };
 
 #endif

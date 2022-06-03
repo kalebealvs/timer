@@ -9,9 +9,12 @@ using namespace ::testing;
 
 struct TimerId : public ::testing::Test {
 #ifdef DEBUG
-    virtual void SetUp() override { Timer::resetIdCount(); }
+    virtual void SetUp() override {
+        Timer::resetIdCount();
+    }
 #else
-    virtual void SetUp() override { }
+    virtual void SetUp() override {
+    }
 #endif
 };
 

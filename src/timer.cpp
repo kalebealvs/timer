@@ -1,25 +1,11 @@
 #include "timer.hpp"
+#include "definitions.hpp"
 
-#include <concepts>
 #include <iostream>
 #include <ratio>
 
-using namespace std::chrono;
-using Clock = high_resolution_clock;
-using Time = Clock::time_point;
-using sc = seconds;
-using ms = milliseconds;
-using mc = microseconds;
-using ns = nanoseconds;
-
-template <typename T> concept Number = std::integral<T> || std::floating_point<T>;
-
-template <typename T>
-    requires Number<T>
-using limit = std::numeric_limits<T>;
-
-template <class Duration>
-using TimePoint = time_point<Clock, Duration>;
+using namespace std;
+using namespace chrono;
 
 static constexpr int64_t InvalidTime = TimePoint<ms>(ms(0)).time_since_epoch().count();
 
@@ -33,40 +19,41 @@ static constexpr auto getRatio() {
     return duration_cast<unit>(sc(1)).count();
 }
 
-Timer::Timer()
-    : _start_time{Clock::now().time_since_epoch().count()}, _end_time{InvalidTime},
-      _stopped{false}, _id{++_id_count} {
+static auto now() {
+    return Clock::now().time_since_epoch().count();
+}
+
+Timer::Timer() : _start_time{now()}, _end_time{InvalidTime}, _stopped{false} {
+    auto&& id_ref = makeAtomic(_id_count);
+    _id = ++id_ref;
 }
 
 Timer::Timer(Timer&& oldTimer) noexcept
-    : _start_time{oldTimer._start_time.load()}, _end_time{oldTimer._end_time.load()},
-      _stopped{oldTimer._stopped.load()}, _id{oldTimer._id} {
+    : _start_time{makeAtomic(oldTimer._start_time)}, _end_time{makeAtomic(
+                                                         oldTimer._end_time)},
+      _stopped{makeAtomic(oldTimer._stopped)}, _id{makeAtomic(oldTimer._id)} {
     oldTimer.invalidate();
 }
 
 auto Timer::operator=(Timer&& oldTimer) noexcept -> Timer& {
-    _start_time = oldTimer._start_time.load();
-    _end_time = oldTimer._end_time.load();
-    _stopped = oldTimer._stopped.load();
-    _id = oldTimer._id;
+    _start_time = makeAtomic(oldTimer._start_time);
+    _end_time = makeAtomic(oldTimer._end_time);
+    _stopped = makeAtomic(oldTimer._stopped);
+    _id = makeAtomic(oldTimer._id);
     oldTimer.invalidate();
     return *this;
 }
 
-Timer::~Timer() {
-    if(_stopped)
-        return;
-
-    stop();
-    printDuration();
-}
+Timer::~Timer() = default;
 
 auto Timer::stop() -> void {
-    if(_stopped)
+    auto&& stop_ref = makeAtomic(_stopped);
+    if(stop_ref)
         return;
 
-    _end_time = Clock::now().time_since_epoch().count();
-    _stopped = true;
+    auto&& end_ref = makeAtomic(_end_time);
+    end_ref = now();
+    stop_ref = true;
 }
 
 auto Timer::elapsedInSeconds() const -> double {
@@ -87,15 +74,21 @@ auto Timer::elapsedInNanoseconds() const -> double {
 
 template <typename unit>
 auto Timer::elapsedTime() const -> double {
+    auto&& start_ref = makeAtomic(_start_time);
+    auto&& end_ref = makeAtomic(_stopped) ? makeAtomic(_end_time) : now();
     return duration<double, std::ratio<1, getRatio<unit>()>>(
-               timeFromEpoch<ns>(_end_time) - timeFromEpoch<ns>(_start_time))
+               timeFromEpoch<ns>(end_ref) - timeFromEpoch<ns>(start_ref))
         .count();
 }
 
 auto Timer::invalidate() -> void {
-    _stopped = true;
-    _start_time = _end_time = InvalidTime;
-    _id = UINT64_MAX;
+    auto&& stop_ref = makeAtomic(_stopped);
+    stop_ref = true;
+    auto&& start_ref = makeAtomic(_start_time);
+    auto&& end_ref = makeAtomic(_end_time);
+    start_ref = end_ref = InvalidTime;
+    auto&& id_ref = makeAtomic(_id);
+    id_ref = UINT64_MAX;
 }
 
 auto Timer::printDuration() const -> void {
@@ -107,13 +100,14 @@ auto Timer::getId() const -> uint64_t {
 }
 
 auto Timer::isValid() const -> bool {
-    return _id_count != UINT64_MAX && _start_time != InvalidTime;
+    return makeAtomic(_id) != UINT64_MAX && makeAtomic(_start_time) != InvalidTime;
 }
 
 #ifdef DEBUG
 void Timer::resetIdCount() {
-    _id_count = 0;
+    auto&& id_c_ref = makeAtomic(_id_count);
+    id_c_ref = 0;
 }
 #endif
 
-std::atomic<uint64_t> Timer::_id_count = 0;
+uint64_t Timer::_id_count = 0;
