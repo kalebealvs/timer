@@ -7,10 +7,10 @@
 using namespace std;
 using namespace chrono;
 
-static constexpr int64_t InvalidTime = TimePoint<ms>(ms(0)).time_since_epoch().count();
+static constexpr epoch_type InvalidTime = TimePoint<ms>(ms(0)).time_since_epoch().count();
 
 template <typename unit>
-static auto timeFromEpoch(const int64_t epoch) -> Time {
+static auto timeFromEpoch(const epoch_type epoch) -> Time {
     return Time{unit(epoch)};
 }
 

@@ -2,6 +2,9 @@
 #define KTIMER_H
 #include <chrono>
 
+using epoch_type
+    = decltype(std::chrono::high_resolution_clock::now().time_since_epoch().count());
+
 class Timer {
 public:
     Timer();
@@ -30,8 +33,6 @@ private:
     template <typename unit>
     inline auto elapsedTime() const -> double;
     inline auto invalidate() -> void;
-    using epoch_type
-        = decltype(std::chrono::high_resolution_clock::now().time_since_epoch().count());
 
     epoch_type _start_time;
     epoch_type _end_time;
